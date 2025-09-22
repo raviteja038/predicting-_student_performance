@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Students Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #283048, #859398);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            background: #ffffff;
+            color: #000;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>All Students - {{ metric|capitalize }}</h2>
+            <a href="{{ url_for('visualize') }}" class="btn btn-light btn-sm">Back</a>
+        </div>
+
+        <div class="card text-center">
+            <h4>{{ metric|capitalize }} Distribution</h4>
+            <img src="{{ url_for('static', filename=plot_filename) }}" alt="All Students Graph">
+        </div>
+    </div>
+</body>
+</html>

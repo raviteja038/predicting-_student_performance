@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+/* Navbar */
+.navbar {
+    background: #1565c0;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.user-info {
+    font-size: 16px;
+}
+
+.logout-btn {
+    margin-left: 20px;
+    background: #e53935;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.logout-btn:hover {
+    background: #c62828;
+}
+
+/* Main container */
+.container {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+/* Card design */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Upload section */
+.upload-card {
+    text-align: center;
+}
+.upload-card input[type="file"] {
+    margin: 10px 0;
+}
+.upload-card button {
+    background: #43a047;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.upload-card button:hover {
+    background: #2e7d32;
+}
+
+/* Dataset table */
+.styled-table {
+    border-collapse: collapse;
+    margin: 15px auto;
+    font-size: 14px;
+    min-width: 90%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+.styled-table th {
+    background-color: #1565c0;
+    color: #ffffff;
+    padding: 12px;
+}
+.styled-table td {
+    padding: 10px;
+    text-align: center;
+}
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.styled-table tbody tr:nth-of-type(odd) {
+    background-color: #e8f0fe;
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background: #1565c0;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn:hover {
+    background: #0d47a1;
+}
+

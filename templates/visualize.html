@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizations</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: #f8f9fa;">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Student Performance Visualizations</h2>
+
+    <!-- Main Buttons -->
+    <div class="text-center mb-4">
+        <a href="{{ url_for('visualize') }}" class="btn btn-light mx-1">Home</a>
+
+        <!-- All Students (collapse to sub-buttons) -->
+        <button class="btn btn-primary mx-1" data-bs-toggle="collapse" data-bs-target="#allOptions">All Students</button>
+
+        <!-- Single Student (collapse to form) -->
+        <button class="btn btn-success mx-1" data-bs-toggle="collapse" data-bs-target="#studentOptions">Single Student</button>
+
+        <!-- Top Students (direct) -->
+        <a href="{{ url_for('visualize_top') }}" class="btn btn-warning mx-1">Top Students</a>
+    </div>
+
+    <!-- All students sub-options -->
+    <div id="allOptions" class="collapse mb-3">
+        <div class="text-center">
+            <a href="{{ url_for('visualize_all', metric='cgpa') }}" class="btn btn-outline-light mx-1">CGPA (avg yearwise)</a>
+            <a href="{{ url_for('visualize_all', metric='attendance') }}" class="btn btn-outline-light mx-1">Attendance (avg yearwise)</a>
+            <a href="{{ url_for('visualize_all', metric='projects') }}" class="btn btn-outline-light mx-1">Projects (avg yearwise)</a>
+            <a href="{{ url_for('visualize_all', metric='activities') }}" class="btn btn-outline-light mx-1">Activities (avg yearwise)</a>
+            <a href="{{ url_for('visualize_all', metric='performance') }}" class="btn btn-outline-light mx-1">Performance (avg yearwise)</a>
+        </div>
+    </div>
+
+    <!-- Single student selection -->
+    <div id="studentOptions" class="collapse mb-3 {% if mode == 'single' %}show{% endif %}">
+        <form method="post" action="{{ url_for('visualize_student') }}" class="row g-3">
+            <div class="col-md-6">
+                <label for="rollno" class="form-label">Select Roll No:</label>
+                <select name="rollno" id="rollno" class="form-select" required>
+                    <option value="">-- Choose Roll No --</option>
+                    {% for r in rollnos %}
+                        <option value="{{ r }}" {% if selected == r %}selected{% endif %}>{{ r }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6 d-flex align-items-end">
+                <button type="submit" class="btn btn-success">View Student</button>
+            </div>
+        </form>
+
+        {% if selected %}
+        <div class="text-center mt-3">
+            <a href="{{ url_for('visualize_student_metric', metric='cgpa', rollno=selected) }}" class="btn btn-outline-light mx-1">CGPA</a>
+            <a href="{{ url_for('visualize_student_metric', metric='attendance', rollno=selected) }}" class="btn btn-outline-light mx-1">Attendance</a>
+            <a href="{{ url_for('visualize_student_metric', metric='projects', rollno=selected) }}" class="btn btn-outline-light mx-1">Projects</a>
+            <a href="{{ url_for('visualize_student_metric', metric='activities', rollno=selected) }}" class="btn btn-outline-light mx-1">Activities</a>
+            <a href="{{ url_for('visualize_student_metric', metric='performance', rollno=selected) }}" class="btn btn-outline-light mx-1">Performance</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Chart area -->
+    {% if chart %}
+    <div class="card shadow bg-dark text-light mb-3">
+        <div class="card-body text-center">
+            <h5 class="card-title">Visualization</h5>
+            <img src="{{ url_for('static', filename=chart) }}" class="img-fluid rounded" alt="Chart">
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Top students table -->
+    {% if mode == 'top' and top_students %}
+    <div class="card shadow bg-dark text-light mb-3">
+        <div class="card-body">
+            <h5>Top 10 Students</h5>
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr><th>Rank</th><th>Roll No</th><th>Name</th><th>Performance</th></tr>
+                </thead>
+                <tbody>
+                    {% for s in top_students %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ s['rollno'] }}</td>
+                            <td>{{ s['name'] }}</td>
+                            <td>{{ '%.2f'|format(s['performance']) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

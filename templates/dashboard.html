@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background:linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Deep Blue Gradient */
+            min-height: 100vh;
+        }
+        .dashboard-container {
+            margin-top: 50px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 20px;
+        }
+        .card-upload {
+            background: #ffffff; /* White */
+        }
+        .card-algo {
+            background: #f8f9fa; /* Light Grey */
+        }
+        .btn-custom {
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container dashboard-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-white">Welcome, {{ user }}</h2>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Upload Dataset -->
+        <div class="mb-4">
+            <div class="card card-upload">
+                <h4 class="mb-3">Upload Dataset</h4>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input type="file" name="dataset" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-custom">Upload</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Select Algorithm -->
+        <div class="mb-4">
+            <div class="card card-algo">
+                <h4 class="mb-3">Select Algorithm</h4>
+                <!-- FIX: added action to call select_algorithm -->
+                <form method="POST" action="{{ url_for('select_algorithm') }}">
+                    <div class="mb-3">
+                        <select name="algorithm" class="form-select" required>
+                            <option value="">-- Select Algorithm --</option>
+                            <option value="linear_regression" {% if selected_algorithm == "linear_regression" %}selected{% endif %}>Linear Regression</option>
+                            <option value="decision_tree" {% if selected_algorithm == "decision_tree" %}selected{% endif %}>Decision Tree</option>
+                            <option value="random_forest" {% if selected_algorithm == "random_forest" %}selected{% endif %}>Random Forest</option>
+                            <option value="knn" {% if selected_algorithm == "knn" %}selected{% endif %}>KNN</option>
+                            <option value="svm" {% if selected_algorithm == "svm" %}selected{% endif %}>SVM</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-custom">Save Algorithm</button>
+                </form>
+
+                <!-- Run Algorithm -->
+                {% if selected_algorithm and table_html %}
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('run_algorithm') }}" class="btn btn-warning btn-custom">
+                        Run {{ selected_algorithm.replace('_',' ').title() }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Visualize Data Button -->
+        {% if table_html %}
+        <div class="text-center mt-4">
+            <a href="{{ url_for('visualize') }}" class="btn btn-info btn-custom">Visualize Data</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
